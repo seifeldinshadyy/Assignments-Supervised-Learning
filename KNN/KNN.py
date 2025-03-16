@@ -7,9 +7,11 @@ from cosine_similarity import cosine_similarity
 
 # KNN Class
 class KNN:
+    # هنا عملنا الكلاس بتاع K
     def __init__(self, k=3, distance_metric="euclidean"):
         self.k = k
-        self.distance_metric = distance_metric
+        # هنا بحدد ال function لي هعملها    (euclidean, cosine, manhattan)  
+        self.distance_metric = distance_metric   
         self.distance_function = self.get_distance_function()
 
     def get_distance_function(self):
@@ -22,17 +24,18 @@ class KNN:
         else:
             raise ValueError("Invalid distance metric. Choose from: euclidean, cosine, manhattan.")
 
+# hana b sort 2l data 
     def fit(self, X, y):
         self.X_train = X
         self.y_train = y
-
+# hana Calls _predict(x) for each test sample x and returns an array of predicted labels.
     def predict(self, X):
         predicted_labels = [self._predict(x) for x in X]
         return np.array(predicted_labels)
 
     def _predict(self, x):
         distances = [self.distance_function(x, x_train) for x_train in self.X_train]
-        k_indices = np.argsort(distances)[:self.k]
-        k_nearest_labels = [self.y_train[i] for i in k_indices]
+        k_indices = np.argsort(distances)[:self.k] #asgar w b2 sort
+        k_nearest_labels = [self.y_train[i] for i in k_indices]  
         most_common = Counter(k_nearest_labels).most_common(1)
         return most_common[0][0]
